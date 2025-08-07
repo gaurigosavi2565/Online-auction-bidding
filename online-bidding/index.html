@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏛️ AuctionHub - Live Online Auctions</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1><i class="fas fa-gavel"></i> AuctionHub</h1>
+                    <p>Live Online Auctions</p>
+                </div>
+                <nav class="nav">
+                    <a href="#auction" class="nav-link active">Live Auction</a>
+                    <a href="#profile" class="nav-link">My Items</a>
+                    <a href="#about" class="nav-link">About</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Auction Section -->
+            <section id="auction" class="auction-section">
+                <div class="auction-header">
+                    <h2>Live Auction</h2>
+                    <div class="timer-container">
+                        <div class="timer-label">Time Remaining:</div>
+                        <div class="timer" id="timer">
+                            <span id="minutes">05</span>:<span id="seconds">00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Current Item -->
+                <div class="auction-item" id="auctionItem">
+                    <div class="item-image">
+                        <img id="itemImage" src="" alt="Auction Item">
+                        <div class="item-overlay">
+                            <div class="item-status" id="itemStatus">LIVE</div>
+                        </div>
+                    </div>
+                    <div class="item-details">
+                        <h3 id="itemName">Loading...</h3>
+                        <div class="item-price">
+                            <span class="label">Base Price:</span>
+                            <span class="amount" id="basePrice">₹0</span>
+                        </div>
+                        <div class="current-bid">
+                            <span class="label">Current Highest Bid:</span>
+                            <span class="amount" id="currentBid">No bids yet</span>
+                        </div>
+                        <div class="bidder-info" id="bidderInfo"></div>
+                    </div>
+                </div>
+
+                <!-- Bidding Form -->
+                <div class="bidding-section">
+                    <div class="bid-form">
+                        <h3>Place Your Bid</h3>
+                        <form id="bidForm">
+                            <div class="form-group">
+                                <label for="bidderName">Your Name:</label>
+                                <input type="text" id="bidderName" name="bidderName" required 
+                                       placeholder="Enter your full name">
+                            </div>
+                            <div class="form-group">
+                                <label for="bidAmount">Bid Amount (₹):</label>
+                                <input type="number" id="bidAmount" name="bidAmount" required 
+                                       placeholder="Enter bid amount" min="0" step="100">
+                            </div>
+                            <button type="submit" class="btn btn-primary" id="bidButton">
+                                <i class="fas fa-gavel"></i> Place Bid
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Live Bids -->
+                    <div class="live-bids">
+                        <h3>Live Bids</h3>
+                        <div class="bids-list" id="bidsList">
+                            <div class="no-bids">No bids placed yet. Be the first to bid!</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Winner Announcement -->
+                <div class="winner-announcement" id="winnerAnnouncement" style="display: none;">
+                    <div class="winner-content">
+                        <i class="fas fa-trophy"></i>
+                        <h3>Auction Ended!</h3>
+                        <p id="winnerMessage"></p>
+                        <button class="btn btn-secondary" onclick="startNewAuction()">
+                            <i class="fas fa-redo"></i> Start New Auction
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Profile Section -->
+            <section id="profile" class="profile-section" style="display: none;">
+                <div class="profile-header">
+                    <h2>My Items</h2>
+                    <button class="btn btn-secondary" onclick="showAuction()">
+                        <i class="fas fa-arrow-left"></i> Back to Auction
+                    </button>
+                </div>
+                
+                <div class="profile-content">
+                    <div class="user-info">
+                        <div class="avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="user-details">
+                            <h3 id="userName">Guest User</h3>
+                            <p>Total Won Items: <span id="totalWon">0</span></p>
+                        </div>
+                    </div>
+
+                    <div class="won-items">
+                        <h3>Items I've Won</h3>
+                        <div class="items-grid" id="wonItemsGrid">
+                            <div class="no-items">You haven't won any items yet.</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- About Section -->
+            <section id="about" class="about-section" style="display: none;">
+                <div class="about-header">
+                    <h2>About AuctionHub</h2>
+                    <button class="btn btn-secondary" onclick="showAuction()">
+                        <i class="fas fa-arrow-left"></i> Back to Auction
+                    </button>
+                </div>
+                
+                <div class="about-content">
+                    <div class="about-text">
+                        <h3>Welcome to AuctionHub</h3>
+                        <p>AuctionHub is a modern, real-time online auction platform that brings the excitement of live bidding to your fingertips. Our platform features:</p>
+                        
+                        <ul>
+                            <li><i class="fas fa-clock"></i> Real-time countdown timers</li>
+                            <li><i class="fas fa-gavel"></i> Live bid updates</li>
+                            <li><i class="fas fa-random"></i> Random item generation</li>
+                            <li><i class="fas fa-trophy"></i> Automatic winner selection</li>
+                            <li><i class="fas fa-mobile-alt"></i> Responsive design</li>
+                        </ul>
+                        
+                        <p>Experience the thrill of competitive bidding from anywhere in the world!</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h3><i class="fas fa-gavel"></i> AuctionHub</h3>
+                    <p>Live Online Auctions</p>
+                </div>
+                <div class="footer-links">
+                    <a href="#auction">Live Auction</a>
+                    <a href="#profile">My Items</a>
+                    <a href="#about">About</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 AuctionHub. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Notification Toast -->
+    <div class="toast" id="toast">
+        <div class="toast-content">
+            <i class="toast-icon"></i>
+            <span class="toast-message"></span>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 

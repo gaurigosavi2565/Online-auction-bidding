@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - AuctionHub</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .admin-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 2rem;
+        }
+        
+        .admin-header {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        }
+        
+        .admin-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+        
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-card h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-card p {
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .admin-sections {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+        }
+        
+        .admin-section {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        }
+        
+        .admin-section h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-admin {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-right: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .btn-admin:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #00b894 0%, #00a085 100%);
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        
+        .data-table th,
+        .data-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .data-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .data-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .back-link {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-link">
+        <i class="fas fa-arrow-left"></i> Back to Auction
+    </a>
+    
+    <div class="admin-container">
+        <div class="admin-header">
+            <h1><i class="fas fa-crown"></i> Admin Panel</h1>
+            <p>Manage auctions, users, and system settings</p>
+        </div>
+        
+        <div class="admin-stats">
+            <div class="stat-card">
+                <h3 id="totalUsers">0</h3>
+                <p>Total Users</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="totalAuctions">0</h3>
+                <p>Total Auctions</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="totalBids">0</h3>
+                <p>Total Bids</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="activeAuctions">0</h3>
+                <p>Active Auctions</p>
+            </div>
+        </div>
+        
+        <div class="admin-sections">
+            <!-- User Management -->
+            <div class="admin-section">
+                <h2><i class="fas fa-users"></i> User Management</h2>
+                <button class="btn-admin" onclick="refreshUsers()">
+                    <i class="fas fa-sync"></i> Refresh Users
+                </button>
+                <button class="btn-admin btn-danger" onclick="clearAllUsers()">
+                    <i class="fas fa-trash"></i> Clear All Users
+                </button>
+                
+                <table class="data-table" id="usersTable">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Join Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                        <!-- Users will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Auction Management -->
+            <div class="admin-section">
+                <h2><i class="fas fa-gavel"></i> Auction Management</h2>
+                <button class="btn-admin" onclick="createNewAuction()">
+                    <i class="fas fa-plus"></i> Create New Auction
+                </button>
+                <button class="btn-admin btn-success" onclick="refreshAuctions()">
+                    <i class="fas fa-sync"></i> Refresh Auctions
+                </button>
+                
+                <table class="data-table" id="auctionsTable">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Base Price</th>
+                            <th>Status</th>
+                            <th>Winner</th>
+                        </tr>
+                    </thead>
+                    <tbody id="auctionsTableBody">
+                        <!-- Auctions will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- System Settings -->
+            <div class="admin-section">
+                <h2><i class="fas fa-cog"></i> System Settings</h2>
+                
+                <div class="form-group">
+                    <label for="auctionDuration">Auction Duration (minutes)</label>
+                    <input type="number" id="auctionDuration" value="5" min="1" max="60">
+                </div>
+                
+                <div class="form-group">
+                    <label for="autoGenerate">Auto-generate items</label>
+                    <select id="autoGenerate">
+                        <option value="true">Enabled</option>
+                        <option value="false">Disabled</option>
+                    </select>
+                </div>
+                
+                <button class="btn-admin" onclick="saveSettings()">
+                    <i class="fas fa-save"></i> Save Settings
+                </button>
+                <button class="btn-admin btn-danger" onclick="resetSystem()">
+                    <i class="fas fa-exclamation-triangle"></i> Reset System
+                </button>
+            </div>
+            
+            <!-- Data Export -->
+            <div class="admin-section">
+                <h2><i class="fas fa-download"></i> Data Export</h2>
+                
+                <button class="btn-admin" onclick="exportUsers()">
+                    <i class="fas fa-download"></i> Export Users
+                </button>
+                <button class="btn-admin" onclick="exportAuctions()">
+                    <i class="fas fa-download"></i> Export Auctions
+                </button>
+                <button class="btn-admin" onclick="exportBids()">
+                    <i class="fas fa-download"></i> Export Bids
+                </button>
+                <button class="btn-admin btn-success" onclick="exportAllData()">
+                    <i class="fas fa-download"></i> Export All Data
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Admin Panel JavaScript
+        class AdminPanel {
+            constructor() {
+                this.loadStats();
+                this.loadUsers();
+                this.loadAuctions();
+            }
+            
+            loadStats() {
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                const wonItems = JSON.parse(localStorage.getItem('wonItems') || '[]');
+                const bids = JSON.parse(localStorage.getItem('auctionBids') || '[]');
+                
+                document.getElementById('totalUsers').textContent = users.length;
+                document.getElementById('totalAuctions').textContent = wonItems.length;
+                document.getElementById('totalBids').textContent = bids.length;
+                document.getElementById('activeAuctions').textContent = '1'; // Current auction
+            }
+            
+            loadUsers() {
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                const tbody = document.getElementById('usersTableBody');
+                
+                tbody.innerHTML = users.map(user => `
+                    <tr>
+                        <td>${user.name}</td>
+                        <td>${user.email}</td>
+                        <td>${new Date(user.joinDate).toLocaleDateString()}</td>
+                    </tr>
+                `).join('');
+            }
+            
+            loadAuctions() {
+                const wonItems = JSON.parse(localStorage.getItem('wonItems') || '[]');
+                const tbody = document.getElementById('auctionsTableBody');
+                
+                tbody.innerHTML = wonItems.map(item => `
+                    <tr>
+                        <td>${item.itemName}</td>
+                        <td>₹${item.winningBid.toLocaleString()}</td>
+                        <td><span style="color: #00b894; font-weight: 600;">SOLD</span></td>
+                        <td>${item.winnerName}</td>
+                    </tr>
+                `).join('');
+            }
+        }
+        
+        // Global functions
+        function refreshUsers() {
+            window.adminPanel.loadUsers();
+            window.adminPanel.loadStats();
+        }
+        
+        function clearAllUsers() {
+            if (confirm('Are you sure you want to clear all users? This action cannot be undone.')) {
+                localStorage.removeItem('users');
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('userEmail');
+                refreshUsers();
+                alert('All users cleared successfully!');
+            }
+        }
+        
+        function createNewAuction() {
+            // This would trigger a new auction in the main system
+            alert('New auction will be created when you return to the main page.');
+        }
+        
+        function refreshAuctions() {
+            window.adminPanel.loadAuctions();
+            window.adminPanel.loadStats();
+        }
+        
+        function saveSettings() {
+            const duration = document.getElementById('auctionDuration').value;
+            const autoGenerate = document.getElementById('autoGenerate').value;
+            
+            localStorage.setItem('auctionDuration', duration);
+            localStorage.setItem('autoGenerate', autoGenerate);
+            
+            alert('Settings saved successfully!');
+        }
+        
+        function resetSystem() {
+            if (confirm('Are you sure you want to reset the entire system? This will clear all data and cannot be undone.')) {
+                localStorage.clear();
+                alert('System reset successfully!');
+                location.reload();
+            }
+        }
+        
+        function exportUsers() {
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            downloadJSON(users, 'auctionhub-users.json');
+        }
+        
+        function exportAuctions() {
+            const wonItems = JSON.parse(localStorage.getItem('wonItems') || '[]');
+            downloadJSON(wonItems, 'auctionhub-auctions.json');
+        }
+        
+        function exportBids() {
+            const bids = JSON.parse(localStorage.getItem('auctionBids') || '[]');
+            downloadJSON(bids, 'auctionhub-bids.json');
+        }
+        
+        function exportAllData() {
+            const allData = {
+                users: JSON.parse(localStorage.getItem('users') || '[]'),
+                wonItems: JSON.parse(localStorage.getItem('wonItems') || '[]'),
+                bids: JSON.parse(localStorage.getItem('auctionBids') || '[]'),
+                settings: {
+                    auctionDuration: localStorage.getItem('auctionDuration') || '5',
+                    autoGenerate: localStorage.getItem('autoGenerate') || 'true'
+                }
+            };
+            downloadJSON(allData, 'auctionhub-all-data.json');
+        }
+        
+        function downloadJSON(data, filename) {
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        
+        // Initialize admin panel
+        document.addEventListener('DOMContentLoaded', () => {
+            window.adminPanel = new AdminPanel();
+        });
+    </script>
+</body>
+</html> 
